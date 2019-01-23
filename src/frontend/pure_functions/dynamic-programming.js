@@ -20,7 +20,6 @@ export const findSubsetSum = (N, list, memo = []) => {
   while (index < list.length) {
     const nextList = remove(index, list)
     const value = list[index]
-    const operator = index === list.length - 1 ? '' : '+'
 
     //memo.push(nextList)
     //console.log('memo: ', memo)
