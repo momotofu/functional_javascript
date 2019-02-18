@@ -23,11 +23,10 @@ function logger(styles, useCss = true) {
   return function configLogger(logger, logMethod = 'log') {
     const log = logger[logMethod];
 
-    return function loggerColor(color) {
+    return function loggerColor(color, message) {
       const style = styles[color];
-      console.log('style: ', style);
 
-      return function (message, value = null) {
+      return function (value = null) {
         // Create entry message (true = browser / false = server)
         if (useCss)
           entry = [`%c${message}`, style[0]];
@@ -43,3 +42,14 @@ function logger(styles, useCss = true) {
 }
 
 logger(styles, false)(console)('blue')('Try anything', {id: 322});
+
+const baseLogger = logger(styles, false);
+
+const consoleLog = baseLogger(console);
+const remoteLog = baseLogger(new RemoteLogger(), 'sendMessage');
+
+const infoLog = consoleLog('yellow', 'info: ');
+const warningLog = consoleLog('red', 'warning: ');
+
+infoLog('I like cheeseburgers');
+warningLog('If you eat too many cheeseburgers you will feel lethargic');
